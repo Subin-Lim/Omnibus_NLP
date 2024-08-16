@@ -1,5 +1,3 @@
-!pip install transformers
-!pip install konlpy
 
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
