@@ -1,3 +1,6 @@
+!pip install transformers
+!pip install konlpy
+
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 from konlpy.tag import Komoran
@@ -46,12 +49,13 @@ class IntentDetector:
         text = text.replace('가요', ' ')
         text = text.replace('갈래', ' ')
         text = text.replace('가야 돼', ' ')
+        text = text.replace('가려면', ' ')
         return text
 
     def extract_destination(self, tokens):
         # 고유명사(NNP)나 지명 관련 일반명사(NNG)를 목적지로 추출
         for token, pos in tokens:
-            if pos in ['NNP', 'NNG'] and '역' in token:  # "역"이 포함된 경우를 목적지로 간주
+            if pos in ['NNP'] and '역' in token:  # "역"이 포함된 경우를 목적지로 간주
                 return token
             if pos == 'NNP':  # 고유명사를 목적지로 간주
                 return token
@@ -64,7 +68,8 @@ texts = [
     "강남역 가는 노선 알려줘",
     "경복궁 가고 싶어",
     "서울역 갈래",
-    "배고프다 배고프고 졸리고 집에 가고 싶어"
+    "배고프다 배고프고 졸리고 집에 가고 싶어",
+    "구로디지털단지역 가려면 몇번 버스 타야해?"
 ]
 
 for text in texts:
